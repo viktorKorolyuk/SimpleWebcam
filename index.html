@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Camera view</title>
+
+  <style>
+    body{
+      margin: 0;
+      overflow: hidden;
+    }
+
+    #bgcam{
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      z-index:-1;
+      filter: blur(5px);
+      transform: scale(10) translate(0%, 0%);
+    }
+
+    #webcam{
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <noscript>
+    <h1>Please enable Javascript for this application to work</h1>
+  </noscript>
+
+  <video id="bgcam"></video>
+  <video id="webcam"></video>
+
+  <script>
+    const bgCam = document.getElementById("bgcam");
+    const webcam = document.getElementById("webcam");
+
+    webcam.width = webcam.clientWidth;
+    webcam.height = webcam.clientHeight;
+
+    if(navigator.mediaDevices.getUserMedia){
+      navigator.mediaDevices.getUserMedia({video:true}).then(stream => {
+        bgCam.srcObject = webcam.srcObject = stream;
+        bgCam.play();
+        webcam.play();
+      }).catch(error => alert("ERROR: " + e));
+    } else {
+      document.innerHTML = "<h1>Your device does not support navigator.mediaDevices.getUserMedia</h1>";
+    }
+  </script>
+
+</body>
+</html>
